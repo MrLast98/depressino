@@ -326,6 +326,14 @@ struct tav1: View {
                     .frame(width: 350)
                     .opacity(tav1In ? 1 : 0.10)
             }
+            HStack{
+                Image(uiImage: UIImage(named: "1")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 400)
+                    .opacity(tav1In ? 1 : 0.10)
+                
+            }
         }.onAppear(perform: {
             self.tav1In = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -366,8 +374,17 @@ struct tav2 : View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 380))
                     .opacity(tav2In ? 1 : 0.10)
+               
                     
             }.background(Color.black)
+            HStack{
+                Image(uiImage: UIImage(named: "2")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 380)
+                    .opacity(tav2In ? 1 : 0.10)
+                
+            }
             
         }.onAppear(perform: {
             self.tav2In = false
@@ -419,6 +436,14 @@ struct tav3: View {
                                 .frame(width: 200))
                     .opacity(tav3In ? 1 : 0.10)
                 }
+            HStack{
+                Image(uiImage: UIImage(named: "3")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 380)
+                    .opacity(tav3In ? 1 : 0.10)
+                
+            }
         }.onAppear(perform: {
             self.tav3In = false
             self.tav3An = false
@@ -449,6 +474,14 @@ struct tav4 : View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 390)
             }.opacity(tav4In ? 1 : 0.10)
+            HStack{
+                Image(uiImage: UIImage(named: "4")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 460)
+                    .opacity(tav4In ? 1 : 0.10)
+                
+            }
         }.onAppear(perform: {
             self.tav4In = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -472,6 +505,14 @@ struct tav5 : View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 390)
             }.opacity(tav5In ? 1 : 0.10)
+            HStack{
+                Image(uiImage: UIImage(named: "5")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 470)
+                    .opacity(tav5In ? 1 : 0.10)
+                
+            }
         }.onAppear(perform: {
             self.tav5In = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
