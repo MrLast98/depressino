@@ -347,7 +347,8 @@ struct tav2 : View {
                 Image(uiImage: UIImage(named: "tav2_depressino")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 390)
+                    .frame(width: 250)
+                    .offset(x:+90)
                     .opacity(tav2In ? 1 : 0.10)
                     
                     
@@ -357,13 +358,13 @@ struct tav2 : View {
                 Image(uiImage: UIImage(named: "tav2_lucepsicologo")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 300)
+                    .frame(width: 340)
                     .offset(x:-45, y:-2)
                     .overlay(Image(uiImage: UIImage(named: "tav2_spicologo")!)
                                 .resizable()
-                                .offset(x:-80, y:-25)
+                                .offset(x:-55, y:-20)
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 400))
+                                .frame(width: 380))
                     .opacity(tav2In ? 1 : 0.10)
                     
             }.background(Color.black)
