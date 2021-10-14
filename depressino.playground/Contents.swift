@@ -55,27 +55,30 @@ struct myView: View {
                             Text("Opening")
                         }
                         .tag(0)
-                    secondView(tabIndex: $tabIndex)
+                    tav1(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 1")
-                            
                         }
-                        .tag(2)
-                    fourthView(tabIndex: $tabIndex)
+                        .tag(1)
+                    tav2(tabIndex: $tabIndex)
+                        .tabItem{
+                            Text("Chap. 2")
+                        }
+                    tav4(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 4")
                         }
-                         .tag(4)
-                    fifthView(tabIndex: $tabIndex)
+                         .tag(3)
+                    tav5(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 5")
                         }
-                        .tag(5)
-                    sixthView(tabIndex: $tabIndex)
+                        .tag(4)
+                    tav6(tabIndex: $tabIndex)
                         .tabItem {
                             Text("End")
                         }
-                        .tag(6)
+                        .tag(5)
                 
                 }.onReceive(Just(tabIndex)) {
                     print("Tapped!!")
@@ -147,49 +150,70 @@ struct introView: View {
                 self.animationAmount = false
                 self.tabIndex = 0
             })
-            .tag(0)
     }
 }
 
 
 
-struct secondView: View {
+struct tav1: View {
     @Binding var tabIndex: Int
+    @State private var tav1In = false;
     
-        var body: some View {
-           
-            VStack{
-               HStack{
-                    Image(uiImage: UIImage(named: "tav1_ombra")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 300)
-                        .overlay(Image(uiImage: UIImage(named: "tav1_depressino")!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 500))
-                    
-                }
-                //Spacer(minLength: 5)
-                HStack(alignment: .lastTextBaseline){
-                    Image(uiImage: UIImage(named: "tav1_gruppo")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 350)
-                        
-                    
-                }
-                
+    var body: some View {
+        VStack{
+            HStack{
+                Image(uiImage: UIImage(named: "tav1_ombra")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 400)
+                    .offset(x:-45, y:-2)
+                    .overlay(Image(uiImage: UIImage(named: "tav1_depressino")!)
+                                .resizable()
+                                .offset(x:-80, y:-25)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 500))
+                    .opacity(tav1In ? 1 : 0.10)
             }
-            
-            
-            
-           
-            
-        }
+            HStack() {
+                Button(action: {
+                    withAnimation(.linear(duration: 1.0)) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.tabIndex += 1
+                        }
+                    }
+                    
+                }){
+                    Text("Depressino is alone with his thoughs, while around him people happily chat")
+                }
+            }
+            //Spacer(minLength: 5)
+            HStack(alignment: .lastTextBaseline){
+                Image(uiImage: UIImage(named: "tav1_gruppo")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 350)
+                    .opacity(tav1In ? 1 : 0.10)
+            }
+        }.onAppear(perform: {
+            self.tav1In = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.linear(duration: 1)) {
+                    self.tav1In = true
+                }
+            }
+        }).opacity(tav1In ? 1 : 0)
+    }
 }
 
-struct fourthView : View {
+struct tav2 : View {
+    @Binding var tabIndex: Int
+    var body: some View {
+        Text("no")
+    }
+
+}
+
+struct tav4 : View {
     @Binding var tabIndex: Int
         
     var body: some View{
@@ -208,7 +232,7 @@ struct fourthView : View {
     
 }
 
-struct fifthView : View {
+struct tav5 : View {
     @Binding var tabIndex: Int
         
     var body: some View{
@@ -227,7 +251,7 @@ struct fifthView : View {
     
 }
 
-struct sixthView : View {
+struct tav6 : View {
     @Binding var tabIndex: Int
         
     var body: some View{
