@@ -7,11 +7,14 @@ import Combine
 
 var HappyMusic: AVAudioPlayer?
 var FlipPage: AVAudioPlayer?
+var SadMusic: AVAudioPlayer?
 
 var path = Bundle.main.path(forResource: "happy", ofType:"mp3")!
 var url = URL(fileURLWithPath: path)
 var path2 = Bundle.main.path(forResource: "page-flip-02", ofType:"mp3")!
 var url2 = URL(fileURLWithPath: path2)
+var path3 = Bundle.main.path(forResource: "sad-music", ofType:"mp3")!
+var url3 = URL(fileURLWithPath: path3)
 
 
 let seconds = 5.0//Time To Delay
@@ -22,6 +25,8 @@ do{
     AVAudioPlayer(contentsOf: url)
     FlipPage = try
     AVAudioPlayer(contentsOf: url2)
+    SadMusic = try
+    AVAudioPlayer(contentsOf: url3)
     
 } catch {
     // couldn't load file :(
@@ -77,33 +82,105 @@ struct myView: View {
                         .tabItem {
                             Text("Opening")
                         }
-                        .tag(0).onAppear {
+                        .tag(0)
+                        .onAppear {
                             FlipPage?.stop()
+                            if HappyMusic?.isPlaying == true{
+                                HappyMusic?.stop()
+                                
+                            }
+                            if SadMusic?.isPlaying == true{
+                                SadMusic?.stop()
+                                
+                            }
                         }
                     tav1(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 1")
                         }
                         .tag(1)
+                        .onAppear {
+                            if HappyMusic?.isPlaying == true{
+                                HappyMusic?.stop()
+                                
+                            }
+                            if SadMusic?.isPlaying == false {
+                                SadMusic?.setVolume(0, fadeDuration: 0)
+                                SadMusic?.play()
+                                SadMusic?.setVolume(0.5, fadeDuration: 4)
+                                
+                                
+                            }
+                        }
                     tav2(tabIndex: $tabIndex)
                         .tabItem{
                             Text("Chap. 2")
                         }.tag(2)
+                        .onAppear {
+                            if HappyMusic?.isPlaying == true{
+                                HappyMusic?.stop()
+                                
+                            }
+                            if SadMusic?.isPlaying == false {
+                                SadMusic?.setVolume(0, fadeDuration: 0)
+                                SadMusic?.play()
+                                SadMusic?.setVolume(0.5, fadeDuration: 4)
+                                
+                                
+                            }
+                        }
+                        
                     tav3(tabIndex: $tabIndex)
                         .tabItem{
                             Text("Chap. 3")
                         }
                         .tag(3)
+                        .onAppear {
+                            if HappyMusic?.isPlaying == true{
+                                HappyMusic?.stop()
+                                
+                            }
+                            if SadMusic?.isPlaying == false {
+                                SadMusic?.setVolume(0, fadeDuration: 0)
+                                SadMusic?.play()
+                                SadMusic?.setVolume(0.5, fadeDuration: 4)
+                                
+                                
+                            }
+                        }
                     tav4(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 4")
                         }
-                         .tag(4)
+                        .tag(4)
+                        .onAppear {
+                            if SadMusic?.isPlaying == true{
+                                SadMusic?.stop()
+                                
+                            }
+                            HappyMusic?.setVolume(0, fadeDuration: 0)
+                            HappyMusic?.currentTime = Double(0)
+                           
+                            //dopo 5 secondi
+                            DispatchQueue.main.asyncAfter(deadline: when) {
+                                HappyMusic?.play()
+
+                               
+
+                                HappyMusic?.setVolume(0.25, fadeDuration: 3)
+
+                                
+                               }
+                        }
                     tav5(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 5")
                         }
                         .tag(5).onAppear {
+                            if SadMusic?.isPlaying == true{
+                                SadMusic?.stop()
+                                
+                            }
                             FlipPage?.play()
 
                             HappyMusic?.setVolume(0, fadeDuration: 0)
@@ -116,6 +193,10 @@ struct myView: View {
                             Text("End")
                         }
                         .tag(6).onAppear {
+                            if SadMusic?.isPlaying == true{
+                                SadMusic?.stop()
+                                
+                            }
                             FlipPage?.play()
 
                             HappyMusic?.play()
@@ -269,6 +350,7 @@ struct tav2 : View {
                     .frame(width: 390)
                     .opacity(tav2In ? 1 : 0.10)
                     
+                    
                 
                     
                     
@@ -294,6 +376,7 @@ struct tav2 : View {
                 }
             }
         }).opacity(tav2In ? 1 : 0)
+            .background(Color.black)
     }
 
 }
