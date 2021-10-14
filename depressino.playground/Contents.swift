@@ -57,6 +57,11 @@ struct myView: View {
                         .tabItem{
                             Text("Chap. 2")
                         }.tag(2)
+                    tav3(tabIndex: $tabIndex)
+                        .tabItem{
+                            Text("Chap. 3")
+                        }
+                        .tag(3)
                     tav4(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 4")
@@ -73,7 +78,7 @@ struct myView: View {
                         }
                         .tag(6)
                 
-                }.onReceive(Just(tabIndex)) {
+        }.onReceive(Just(tabIndex)) {
                     print("Tapped!!")
                     
                     switch $0 {
@@ -84,28 +89,22 @@ struct myView: View {
                         //dopo 5 secondi
                         DispatchQueue.main.asyncAfter(deadline: when) {
                             HappyMusic?.play()
-                            HappyMusic?.setVolume(40, fadeDuration: 3)
+                            HappyMusic?.setVolume(0.25, fadeDuration: 3)
                             
                            }
                     case 5:
                         HappyMusic?.setVolume(0, fadeDuration: 0)
                         HappyMusic?.play()
                         HappyMusic?.currentTime = Double(60)
-                        HappyMusic?.setVolume(40, fadeDuration: 4)
+                        HappyMusic?.setVolume(0.25, fadeDuration: 4)
                     case 6:
                         HappyMusic?.play()
                         HappyMusic?.currentTime = Double(183)
-                        HappyMusic?.setVolume(40, fadeDuration: 4)
-                        
-                        
-                        
+                        HappyMusic?.setVolume(0.25, fadeDuration: 4)
                     default:
                         HappyMusic?.setVolume(0, fadeDuration: 1)
-                        
-                        
                     }
-                    
-           }
+                }
         }
     }
 
@@ -118,31 +117,38 @@ struct introView: View {
             configuration.label
                 .opacity(configuration.isPressed ? 1 : 1)
                 .scaleEffect(configuration.isPressed ? 0.8 : 1)
+                .frame(width: 200, height: 200, alignment: .center)
         }
     }
 
     var body: some View {
-        
-        Button(action: {
-            withAnimation(.linear(duration: 1.0)) {
-                self.animationAmount = !self.animationAmount
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.tabIndex += 1
-                }
-            }
-            
-        }){
-            Image(uiImage: UIImage(named: "ciaone")!)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 400)
+        VStack{
+            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Tappami la minchia per continuare")
+                .offset(y:+50)
+                .padding(20)
                 .opacity(animationAmount ? 0 : 1)
+            Spacer()
+            Button(action: {
+                withAnimation(.linear(duration: 1.0)) {
+                    self.animationAmount = !self.animationAmount
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.tabIndex += 1
+                    }
+                }
                 
-        }.buttonStyle(MyButtonStyle())
-            .onAppear(perform: {
-                self.animationAmount = false
-                self.tabIndex = 0
-            })
+            }){
+                Image(uiImage: UIImage(named: "ciaone")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100)
+                    .opacity(animationAmount ? 0 : 1)
+                    
+            }.buttonStyle(MyButtonStyle())
+                .onAppear(perform: {
+                    self.animationAmount = false
+                    self.tabIndex = 0
+                })
+        }
     }
 }
 
@@ -174,7 +180,6 @@ struct tav1: View {
                             self.tabIndex += 1
                         }
                     }
-                    
                 }){
                     Text("Depressino is alone with his thoughs, while around him people happily chat")
                 }
@@ -208,8 +213,17 @@ struct tav2 : View {
 
 struct tav3: View {
     @Binding var tabIndex: Int
+    @State private var tav3In: Bool = false
     var body: some View {
-        Text("forse")
+        VStack{
+            HStack{
+                Image(uiImage: UIImage(named: "tav3_depressino")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 350)
+                    .opacity(1)
+            }
+        }.background(Color.black)
     }
 }
 
