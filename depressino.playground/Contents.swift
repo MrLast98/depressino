@@ -301,39 +301,53 @@ struct tav2 : View {
 struct tav3: View {
     @Binding var tabIndex: Int
     @State private var tav3In: Bool = false
+    @State private var tav3An: Bool = false
     
     var body: some View {
         VStack{
             HStack{
-                Image(uiImage: UIImage(named: "tav3_depressino")!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 70)
-                    .opacity(1)
+                VStack {
+                    Image(uiImage: UIImage(named: "tav3_depressino")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 70)
+                        .opacity(1)
+                        .offset(y:+100)
+                    Image(uiImage: UIImage(named: "tav3_balloon")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 110)
+                        .opacity(1)
+                        .scaleEffect(1.55)
+                        .offset(x:-10, y:-75)
+                }
                 Image(uiImage: UIImage(named: "tav3_lucepsicologo")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 300)
-                    .offset(x:-45, y:-2)
-                    .overlay(Image(uiImage: UIImage(named: "tav3_psicologo")!)
+                    .frame(width: 300, height: 620)
+                    .offset(y:+5)
+                    .overlay(Image(uiImage: UIImage(named: (tav3An ? "tav2_spicologo" : "tav3_psicologo"))!)
                                 .resizable()
-                                .offset(x:-80, y:-25)
+                                .offset(x:(tav3An ? 0 : +50))
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 200))
                     .opacity(tav3In ? 1 : 0.10)
-                   
                 }
-            
         }.onAppear(perform: {
             self.tav3In = false
+            self.tav3An = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 withAnimation(.linear(duration: 1)) {
                     self.tav3In = true
                 }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    withAnimation(.spring()) {
+                        self.tav3An = true
+                    }
+                }
             }
         }).opacity(tav3In ? 1 : 0)
             .background(Color.black)
-        
     }
 }
 
