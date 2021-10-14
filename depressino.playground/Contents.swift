@@ -375,9 +375,11 @@ struct tav2 : View {
                 withAnimation(.linear(duration: 1)) {
                     self.tav2In = true
                 }
+                
             }
+            
         }).opacity(tav2In ? 1 : 0)
-            .background(Color.black)
+        .background(Color.black)
     }
 
 }
@@ -445,7 +447,7 @@ struct tav4 : View {
                 Image(uiImage: UIImage(named: "tav_4")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 300)
+                    .frame(width: 390)
             }.opacity(tav4In ? 1 : 0.10)
         }.onAppear(perform: {
             self.tav4In = false
@@ -468,7 +470,7 @@ struct tav5 : View {
                 Image(uiImage: UIImage(named: "tav_5")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 300)
+                    .frame(width: 390)
             }.opacity(tav5In ? 1 : 0.10)
         }.onAppear(perform: {
             self.tav5In = false
