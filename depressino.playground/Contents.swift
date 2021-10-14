@@ -205,7 +205,7 @@ struct myView: View {
                         }
                 
         }.onReceive(Just(tabIndex)) {
-                    print("Tapped!!")
+                    //print("Tapped!!")
                     FlipPage?.play()
                     
                     switch $0 {
