@@ -6,27 +6,46 @@ import AVFoundation
 import Combine
 
 var HappyMusic: AVAudioPlayer?
+var FlipPage: AVAudioPlayer?
+
 var path = Bundle.main.path(forResource: "happy", ofType:"mp3")!
 var url = URL(fileURLWithPath: path)
+var path2 = Bundle.main.path(forResource: "page-flip-02", ofType:"mp3")!
+var url2 = URL(fileURLWithPath: path2)
+
+
 let seconds = 5.0//Time To Delay
 let when = DispatchTime.now() + seconds
 
 do{
     HappyMusic = try
     AVAudioPlayer(contentsOf: url)
+    FlipPage = try
+    AVAudioPlayer(contentsOf: url2)
     
 } catch {
     // couldn't load file :(
 }
 
+
 public struct WhatsNewView<Content: View>: View {
     private let content: Content
+    private var controller = UITabBarController()
+    
+    
 
     public init(@ViewBuilder contentProvider: () -> Content){
         content = contentProvider()
+        self.controller.navigationItem.rightBarButtonItem = nil
+        
+        
+        
+       
+                
     }
 
     public var body: some View {
+        
         TabView {
             content
         }
@@ -35,19 +54,32 @@ public struct WhatsNewView<Content: View>: View {
         .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+        
+        
+        /*controller.moreNavigationController.navigationBar.isHidden = true*/
+        
+                
     }
+    
+    
+    
 }
 
 
 struct myView: View {
     @State private var tabIndex = 0
+    
+   
     var body: some View {
+        
         TabView(selection: $tabIndex) {
                     introView(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Opening")
                         }
-                        .tag(0)
+                        .tag(0).onAppear {
+                            FlipPage?.stop()
+                        }
                     tav1(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 1")
@@ -71,15 +103,29 @@ struct myView: View {
                         .tabItem {
                             Text("Chap. 5")
                         }
-                        .tag(5)
+                        .tag(5).onAppear {
+                            FlipPage?.play()
+
+                            HappyMusic?.setVolume(0, fadeDuration: 0)
+                            HappyMusic?.play()
+                            HappyMusic?.currentTime = Double(60)
+                            HappyMusic?.setVolume(0.5, fadeDuration: 4)
+                        }
                     tav6(tabIndex: $tabIndex)
                         .tabItem {
                             Text("End")
                         }
-                        .tag(6)
+                        .tag(6).onAppear {
+                            FlipPage?.play()
+
+                            HappyMusic?.play()
+                            HappyMusic?.currentTime = Double(183)
+                            HappyMusic?.setVolume(0.5, fadeDuration: 4)
+                        }
                 
         }.onReceive(Just(tabIndex)) {
                     print("Tapped!!")
+                    FlipPage?.play()
                     
                     switch $0 {
                     case 4:
@@ -89,18 +135,25 @@ struct myView: View {
                         //dopo 5 secondi
                         DispatchQueue.main.asyncAfter(deadline: when) {
                             HappyMusic?.play()
+
+                           
+
                             HappyMusic?.setVolume(0.25, fadeDuration: 3)
+
                             
                            }
                     case 5:
                         HappyMusic?.setVolume(0, fadeDuration: 0)
                         HappyMusic?.play()
                         HappyMusic?.currentTime = Double(60)
-                        HappyMusic?.setVolume(0.25, fadeDuration: 4)
+
+                        HappyMusic?.setVolume(0.5, fadeDuration: 4)
+                    
                     case 6:
                         HappyMusic?.play()
                         HappyMusic?.currentTime = Double(183)
                         HappyMusic?.setVolume(0.25, fadeDuration: 4)
+
                     default:
                         HappyMusic?.setVolume(0, fadeDuration: 1)
                     }
@@ -205,8 +258,42 @@ struct tav1: View {
 
 struct tav2 : View {
     @Binding var tabIndex: Int
+    @State private var tav2In = false;
+    
     var body: some View {
-        Text("no")
+        VStack{
+            HStack{
+                Image(uiImage: UIImage(named: "tav2_depressino")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 390)
+                    .opacity(tav2In ? 1 : 0.10)
+                    
+                
+                    
+                    
+                Image(uiImage: UIImage(named: "tav2_lucepsicologo")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 300)
+                    .offset(x:-45, y:-2)
+                    .overlay(Image(uiImage: UIImage(named: "tav2_spicologo")!)
+                                .resizable()
+                                .offset(x:-80, y:-25)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 400))
+                    .opacity(tav2In ? 1 : 0.10)
+                    
+            }.background(Color.black)
+            
+        }.onAppear(perform: {
+            self.tav2In = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.linear(duration: 1)) {
+                    self.tav2In = true
+                }
+            }
+        }).opacity(tav2In ? 1 : 0)
     }
 
 }
@@ -214,60 +301,114 @@ struct tav2 : View {
 struct tav3: View {
     @Binding var tabIndex: Int
     @State private var tav3In: Bool = false
+    
     var body: some View {
         VStack{
             HStack{
                 Image(uiImage: UIImage(named: "tav3_depressino")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 350)
+                    .frame(width: 70)
                     .opacity(1)
+                Image(uiImage: UIImage(named: "tav3_lucepsicologo")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 300)
+                    .offset(x:-45, y:-2)
+                    .overlay(Image(uiImage: UIImage(named: "tav3_psicologo")!)
+                                .resizable()
+                                .offset(x:-80, y:-25)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 200))
+                    .opacity(tav3In ? 1 : 0.10)
+                   
+                }
+            
+        }.onAppear(perform: {
+            self.tav3In = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.linear(duration: 1)) {
+                    self.tav3In = true
+                }
             }
-        }.background(Color.black)
+        }).opacity(tav3In ? 1 : 0)
+            .background(Color.black)
+        
     }
 }
 
 struct tav4 : View {
     @Binding var tabIndex: Int
+    @State private var tav4In = false;
+    
     var body: some View{
-        HStack{
-            Image(uiImage: UIImage(named: "tav_4")!)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 300)
-        }
+        VStack{
+            HStack{
+                Image(uiImage: UIImage(named: "tav_4")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 300)
+            }.opacity(tav4In ? 1 : 0.10)
+        }.onAppear(perform: {
+            self.tav4In = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.linear(duration: 1)) {
+                    self.tav4In = true
+                }
+            }
+        }).opacity(tav4In ? 1 : 0)
     }
 }
 
 struct tav5 : View {
     @Binding var tabIndex: Int
+    @State private var tav5In = false;
     
     var body: some View{
-        HStack{
-            Image(uiImage: UIImage(named: "tav_5")!)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 300)
-        }
+        VStack{
+            HStack{
+                Image(uiImage: UIImage(named: "tav_5")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 300)
+            }.opacity(tav5In ? 1 : 0.10)
+        }.onAppear(perform: {
+            self.tav5In = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.linear(duration: 1)) {
+                    self.tav5In = true
+                }
+            }
+        }).opacity(tav5In ? 1 : 0)
     }
 }
 
 struct tav6 : View {
     @Binding var tabIndex: Int
+    @State private var tav6In = false;
         
     var body: some View{
-        HStack{
-            Image(uiImage: UIImage(named: "tav6_lucetitolo")!)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 400)
-                .overlay(Image(uiImage: UIImage(named: "tav6_titoli")!)
-                            .resizable()
-                            .offset(x:+30)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 500))
+        VStack{
+            HStack{
+                Image(uiImage: UIImage(named: "tav6_lucetitolo")!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 400)
+                    .overlay(Image(uiImage: UIImage(named: "tav6_titoli")!)
+                                .resizable()
+                                .offset(x:+30)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 500))
 
-        }
+            }.opacity(tav6In ? 1 : 0.10)
+        }.onAppear(perform: {
+            self.tav6In = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.linear(duration: 1)) {
+                    self.tav6In = true
+                }
+            }
+        }).opacity(tav6In ? 1 : 0)
     }
 }
 
