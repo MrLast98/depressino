@@ -5,13 +5,11 @@ import CoreGraphics
 import AVFoundation
 import Combine
 
-
 var HappyMusic: AVAudioPlayer?
 var path = Bundle.main.path(forResource: "happy", ofType:"mp3")!
 var url = URL(fileURLWithPath: path)
 let seconds = 5.0//Time To Delay
 let when = DispatchTime.now() + seconds
-
 
 do{
     HappyMusic = try
@@ -20,11 +18,6 @@ do{
 } catch {
     // couldn't load file :(
 }
-
-
-
-
-
 
 public struct WhatsNewView<Content: View>: View {
     private let content: Content
@@ -63,22 +56,22 @@ struct myView: View {
                     tav2(tabIndex: $tabIndex)
                         .tabItem{
                             Text("Chap. 2")
-                        }
+                        }.tag(2)
                     tav4(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 4")
                         }
-                         .tag(3)
+                         .tag(4)
                     tav5(tabIndex: $tabIndex)
                         .tabItem {
                             Text("Chap. 5")
                         }
-                        .tag(4)
+                        .tag(5)
                     tav6(tabIndex: $tabIndex)
                         .tabItem {
                             Text("End")
                         }
-                        .tag(5)
+                        .tag(6)
                 
                 }.onReceive(Just(tabIndex)) {
                     print("Tapped!!")
@@ -213,65 +206,55 @@ struct tav2 : View {
 
 }
 
+struct tav3: View {
+    @Binding var tabIndex: Int
+    var body: some View {
+        Text("forse")
+    }
+}
+
 struct tav4 : View {
     @Binding var tabIndex: Int
-        
     var body: some View{
-        
         HStack{
             Image(uiImage: UIImage(named: "tav_4")!)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 300)
-                
-           
         }
     }
-    
-    
-    
 }
 
 struct tav5 : View {
     @Binding var tabIndex: Int
-        
+    
     var body: some View{
-        
         HStack{
             Image(uiImage: UIImage(named: "tav_5")!)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 300)
-                
-           
         }
     }
-    
-    
-    
 }
 
 struct tav6 : View {
     @Binding var tabIndex: Int
         
     var body: some View{
-        
         HStack{
             Image(uiImage: UIImage(named: "tav6_lucetitolo")!)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 300)
+                .frame(width: 400)
                 .overlay(Image(uiImage: UIImage(named: "tav6_titoli")!)
                             .resizable()
+                            .offset(x:+30)
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 500))
-                
-            
+
         }
     }
-    
-    
-    
 }
 
 
