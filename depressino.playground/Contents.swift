@@ -42,11 +42,6 @@ public struct WhatsNewView<Content: View>: View {
     public init(@ViewBuilder contentProvider: () -> Content){
         content = contentProvider()
         self.controller.navigationItem.rightBarButtonItem = nil
-        
-        
-        
-       
-                
     }
 
     public var body: some View {
@@ -59,15 +54,7 @@ public struct WhatsNewView<Content: View>: View {
         .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle())
         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-        
-        
-        /*controller.moreNavigationController.navigationBar.isHidden = true*/
-        
-                
     }
-    
-    
-    
 }
 
 
@@ -257,7 +244,20 @@ struct introView: View {
 
     var body: some View {
         VStack{
-            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Tappami la minchia per continuare")
+            Text("A Sun, Wine & Code Production.")
+                .offset(y:+50)
+                .padding(20)
+                .opacity(animationAmount ? 0 : 1)
+            Text("Emanuele Giunta | Francesco Iaccarino")
+                .offset(y:+50)
+                .padding(20)
+                .opacity(animationAmount ? 0 : 1)
+            Text("Salvatore Gallo | Roberta Garofalo")
+                .offset(y:+50)
+                .padding(20)
+                .opacity(animationAmount ? 0 : 1)
+            Spacer()
+            Text("Press any text you see to progress in the story!")
                 .offset(y:+50)
                 .padding(20)
                 .opacity(animationAmount ? 0 : 1)
@@ -269,7 +269,6 @@ struct introView: View {
                         self.tabIndex += 1
                     }
                 }
-                
             }){
                 Image(uiImage: UIImage(named: "ciaone")!)
                     .resizable()
@@ -282,7 +281,12 @@ struct introView: View {
                     self.animationAmount = false
                     self.tabIndex = 0
                 })
+            Text("Tap our Logo to begin!")
+                .offset(y:-50)
+                .padding(20)
+                .opacity(animationAmount ? 0 : 1)
         }
+           
     }
 }
 
@@ -299,10 +303,10 @@ struct tav1: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 400)
-                    .offset(x:-45, y:-2)
+                    .offset(x:-80, y:-2)
                     .overlay(Image(uiImage: UIImage(named: "tav1_depressino")!)
                                 .resizable()
-                                .offset(x:-80, y:-25)
+                                .offset(x:-120, y:-25)
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 500))
                     .opacity(tav1In ? 1 : 0.10)
@@ -315,7 +319,13 @@ struct tav1: View {
                         }
                     }
                 }){
-                    Text("Depressino is alone with his thoughs, while around him people happily chat")
+                    Image(uiImage: UIImage(named: "1")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 400)
+                        .scaleEffect(1)
+                        .opacity(tav1In ? 1 : 0.10)
+                    
                 }
             }
             //Spacer(minLength: 5)
@@ -327,12 +337,7 @@ struct tav1: View {
                     .opacity(tav1In ? 1 : 0.10)
             }
             HStack{
-                Image(uiImage: UIImage(named: "1")!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 400)
-                    .opacity(tav1In ? 1 : 0.10)
-                
+              
             }
         }.onAppear(perform: {
             self.tav1In = false
@@ -358,11 +363,7 @@ struct tav2 : View {
                     .frame(width: 250)
                     .offset(x:+90)
                     .opacity(tav2In ? 1 : 0.10)
-                    
-                    
-                
-                    
-                    
+  
                 Image(uiImage: UIImage(named: "tav2_lucepsicologo")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -374,17 +375,25 @@ struct tav2 : View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 380))
                     .opacity(tav2In ? 1 : 0.10)
-               
-                    
+               Text("Press any Text to Continue")
             }.background(Color.black)
             HStack{
+                Button(action: {
+                withAnimation(.linear(duration: 1.0)) {
+                    self.tav2In = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.tabIndex += 1
+                    }
+                }
+                
+            }){
                 Image(uiImage: UIImage(named: "2")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 380)
                     .opacity(tav2In ? 1 : 0.10)
-                
             }
+        }
             
         }.onAppear(perform: {
             self.tav2In = false
@@ -405,9 +414,16 @@ struct tav3: View {
     @Binding var tabIndex: Int
     @State private var tav3In: Bool = false
     @State private var tav3An: Bool = false
+    @State private var tav3Pop: Bool = false
+    @State private var tav3Broke: Bool = false
+    @State private var tav3Pieces: Bool = false
+    
+    var tap: some Gesture {
+        TapGesture(count:1)
+            .onEnded { self.tabIndex += 1 }
+    }
     
     var body: some View {
-        VStack{
             HStack{
                 VStack {
                     Image(uiImage: UIImage(named: "tav3_depressino")!)
@@ -415,56 +431,80 @@ struct tav3: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 70)
                         .opacity(1)
-                        .offset(y:+100)
-                    Image(uiImage: UIImage(named: "tav3_balloon")!)
+                        .offset(x:(tav3An ? 40 : 0), y:+100)
+                        .overlay(Image(uiImage: UIImage(named: "3")!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 110, height: 100)
+                                    .scaleEffect(2.60)
+                                    .offset(x:90, y:-90)
+                                    .opacity(tav3In ? 1 : 0.10)
+                                    .gesture(tap)
+                            )
+                    Image(uiImage: UIImage(named: (tav3Pieces ? "tav3_balloonmucchio" : (tav3Broke ? "tav3_balloonrotto" : (tav3Pop ? "tav3_balloonpoof" : "tav3_balloon"))))!)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 110)
                         .opacity(1)
                         .scaleEffect(1.55)
-                        .offset(x:-10, y:-75)
+                        .offset(x:(tav3An ? 80 : -10), y:(tav3Pieces ? 20 : (tav3Broke ? -25 : -75)))
                 }
                 Image(uiImage: UIImage(named: "tav3_lucepsicologo")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 300, height: 620)
-                    .offset(y:+5)
+                    .frame(width: 300, height: 320)
+                    .scaleEffect(0.75)
+                    .offset(x:+20, y:+5)
                     .overlay(Image(uiImage: UIImage(named: (tav3An ? "tav2_spicologo" : "tav3_psicologo"))!)
                                 .resizable()
                                 .offset(x:(tav3An ? 0 : +50))
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 200))
                     .opacity(tav3In ? 1 : 0.10)
-                }
-            HStack{
-                Image(uiImage: UIImage(named: "3")!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 380)
-                    .opacity(tav3In ? 1 : 0.10)
-                
-            }
-        }.onAppear(perform: {
-            self.tav3In = false
-            self.tav3An = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.linear(duration: 1)) {
-                    self.tav3In = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    withAnimation(.spring()) {
-                        self.tav3An = true
+                }.onAppear(perform: {
+                self.tav3In = false
+                self.tav3An = false
+                self.tav3Pop = false
+                self.tav3Broke = false
+                self.tav3Pieces = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation(.linear(duration: 1)) {
+                        self.tav3In = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                        withAnimation(.spring()) {
+                            self.tav3An = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation(.spring()) {
+                                self.tav3Pop = true
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                                withAnimation(.spring()) {
+                                    self.tav3Broke = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    withAnimation(.spring()) {
+                                        self.tav3Pieces = true
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }).opacity(tav3In ? 1 : 0)
-            .background(Color.black)
+            }).opacity(tav3In ? 1 : 0)
+                .background(Color.black)
     }
-}
+    }
 
 struct tav4 : View {
     @Binding var tabIndex: Int
     @State private var tav4In = false;
+    
+    var tap: some Gesture {
+        TapGesture(count:1)
+            .onEnded { self.tabIndex += 1 }
+    }
     
     var body: some View{
         VStack{
@@ -480,6 +520,8 @@ struct tav4 : View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 460)
                     .opacity(tav4In ? 1 : 0.10)
+                    .gesture(tap)
+                
                 
             }
         }.onAppear(perform: {
@@ -497,6 +539,11 @@ struct tav5 : View {
     @Binding var tabIndex: Int
     @State private var tav5In = false;
     
+    var tap: some Gesture {
+        TapGesture(count:1)
+            .onEnded { self.tabIndex += 1 }
+    }
+    
     var body: some View{
         VStack{
             HStack{
@@ -511,6 +558,7 @@ struct tav5 : View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 470)
                     .opacity(tav5In ? 1 : 0.10)
+                    .gesture(tap)
                 
             }
         }.onAppear(perform: {
@@ -534,10 +582,12 @@ struct tav6 : View {
                 Image(uiImage: UIImage(named: "tav6_lucetitolo")!)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .scaleEffect(tav6In ? 1 : 0.25)
                     .frame(width: 400)
                     .overlay(Image(uiImage: UIImage(named: "tav6_titoli")!)
                                 .resizable()
                                 .offset(x:+30)
+                                .scaleEffect(tav6In ? 1 : 0.25)
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 500))
 
